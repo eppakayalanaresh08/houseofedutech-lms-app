@@ -1,50 +1,120 @@
-# Welcome to your Expo app 👋
+# HouseofEdTech Mini LMS
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+React Native Expo developer assignment built as a production-style mini LMS with a classic, calmer UI direction instead of a generic startup-style interface.
 
-## Get started
+## Stack
 
-1. Install dependencies
+- Expo SDK 54
+- React Native + Expo Router
+- TypeScript strict mode
+- NativeWind
+- Zustand
+- Expo SecureStore
+- AsyncStorage
+- Expo Notifications
+- React Native WebView
+- NetInfo
+- Legend List
 
-   ```bash
-   npm install
-   ```
+## What is implemented
 
-2. Start the app
+- Login and registration flow with mock-first auth service
+- Secure token storage with Expo SecureStore
+- Auto session restore with basic refresh-token handling
+- Course catalog powered by a clean API service layer
+- Search, pull-to-refresh, bookmarks, and enrollment state
+- Profile screen with learner stats and avatar switching
+- Embedded WebView lesson screen with native-to-web bridge context
+- Offline banner and retry-friendly API client with timeout handling
+- Bookmark milestone notification after 5 saved courses
+- 24-hour return reminder scheduling
+- Clean separation between config, services, stores, domain types, and UI
 
-   ```bash
-   npx expo start
-   ```
+## Architecture notes
 
-In the output, you'll find options to open the app in a
+- `app/`
+  Expo Router screens and route groups.
+- `src/services/api/`
+  API client, auth service, course service, mock data, and error types.
+- `src/stores/`
+  Zustand stores for auth, courses, and preferences.
+- `src/components/`
+  Reusable UI primitives and feature components.
+- `src/config/`
+  App-level runtime configuration.
+- `src/lib/`
+  Storage abstractions for SecureStore and AsyncStorage.
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## Mock mode and later API integration
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+The app currently runs in mock mode by default so the assignment is stable during review.
 
-## Get a fresh project
+To switch to real API wiring later:
 
-When you're ready, run:
+1. Open `app.json`
+2. Change `expo.extra.useMockApi` from `true` to `false`
+3. Keep `expo.extra.apiBaseUrl` pointed at `https://api.freeapi.app`
+4. Expand the request mapping inside `src/services/api/auth-service.ts` and `src/services/api/course-service.ts`
+
+## Setup
 
 ```bash
-npm run reset-project
+npm install
+npm run start
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## Useful commands
 
-## Learn more
+```bash
+npm run lint
+npm run typecheck
+npm run android
+npm run ios
+```
 
-To learn more about developing your project with Expo, look at the following resources:
+## Build notes
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+For a local Android development build:
 
-## Join the community
+```bash
+npx expo run:android
+```
 
-Join our community of developers creating universal apps.
+For CI or distributable Android builds, use EAS with an Android profile after adding your signing setup:
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+```bash
+npx eas build -p android
+```
+
+## Runtime configuration
+
+No external `.env` file is required for the current mock-first assignment build.
+
+Runtime values live in `app.json` under:
+
+- `expo.extra.apiBaseUrl`
+- `expo.extra.useMockApi`
+
+## Key engineering decisions
+
+- Mock-first API mode keeps the project reviewable and reliable while preserving a backend-ready service layer.
+- Tokens are isolated in SecureStore, while app data such as bookmarks and preferences live in AsyncStorage.
+- Zustand keeps async state readable without over-engineering the app.
+- Legend List is used for better list performance and smoother scrolling behavior.
+- The WebView screen uses a local HTML template plus a native bridge payload for controlled embedded content.
+- The UI uses a paper, navy, and brass palette to feel more timeless and course-oriented.
+
+## Known limitations
+
+- Profile image updates use curated remote avatar URLs instead of device camera/gallery selection.
+- Auth service is mock-first and needs endpoint mapping to fully use `/api/v1/users`.
+- The 24-hour reminder is scheduled locally on app open rather than using background task orchestration.
+- No automated test suite has been added yet.
+
+## Suggested demo checklist
+
+- Sign in and relaunch to confirm session restore
+- Search and refresh the course catalog
+- Save 5 courses to trigger the bookmark notification
+- Enroll in a course and open the embedded viewer
+- Turn on airplane mode to verify the offline banner and persisted state

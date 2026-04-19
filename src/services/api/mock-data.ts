@@ -1,0 +1,91 @@
+import type { Course, Instructor, UserProfile } from '@/src/types/domain';
+
+const instructors: Instructor[] = [
+  {
+    id: 'ins-1',
+    name: 'Elena Brooks',
+    email: 'elena@houseofedtech.dev',
+    avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=600&q=80',
+    headline: 'Learning design strategist',
+  },
+  {
+    id: 'ins-2',
+    name: 'Marcus Hale',
+    email: 'marcus@houseofedtech.dev',
+    avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=600&q=80',
+    headline: 'Mobile architecture lead',
+  },
+  {
+    id: 'ins-3',
+    name: 'Priya Menon',
+    email: 'priya@houseofedtech.dev',
+    avatar: 'https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?auto=format&fit=crop&w=600&q=80',
+    headline: 'Assessment and analytics mentor',
+  },
+];
+
+export const mockCourses: Course[] = [
+  {
+    id: 'course-1',
+    title: 'Designing Mobile Learning Journeys',
+    description: 'Build engaging course flows, pacing, and completion mechanics for professional learners.',
+    category: 'Instructional Design',
+    price: 79,
+    rating: 4.8,
+    lessons: 18,
+    durationMinutes: 240,
+    thumbnail: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=900&q=80',
+    instructor: instructors[0],
+    level: 'Intermediate',
+  },
+  {
+    id: 'course-2',
+    title: 'Production React Native for Education',
+    description: 'Ship resilient mobile learning apps with offline state, push touchpoints, and scalable navigation.',
+    category: 'Mobile Engineering',
+    price: 99,
+    rating: 4.9,
+    lessons: 22,
+    durationMinutes: 320,
+    thumbnail: 'https://images.unsplash.com/photo-1516321497487-e288fb19713f?auto=format&fit=crop&w=900&q=80',
+    instructor: instructors[1],
+    level: 'Advanced',
+  },
+  {
+    id: 'course-3',
+    title: 'Metrics That Improve Course Completion',
+    description: 'Use retention signals, learner habits, and feedback loops to improve educational outcomes.',
+    category: 'Learning Analytics',
+    price: 64,
+    rating: 4.7,
+    lessons: 16,
+    durationMinutes: 210,
+    thumbnail: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=900&q=80',
+    instructor: instructors[2],
+    level: 'Beginner',
+  },
+  {
+    id: 'course-4',
+    title: 'Classic Curriculum Planning Studio',
+    description: 'Map modules, assessments, and study cadence into a learning plan that feels deliberate and premium.',
+    category: 'Curriculum',
+    price: 72,
+    rating: 4.6,
+    lessons: 14,
+    durationMinutes: 180,
+    thumbnail: 'https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=900&q=80',
+    instructor: instructors[0],
+    level: 'Beginner',
+  },
+];
+
+export const demoUser = (overrides?: Partial<UserProfile>): UserProfile => ({
+  id: 'user-demo',
+  name: 'Avery Student',
+  email: 'avery@houseofedtech.dev',
+  avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=600&q=80',
+  enrolledCourseIds: ['course-2'],
+  bookmarkedCourseIds: ['course-1', 'course-3'],
+  streakDays: 12,
+  ...overrides,
+});

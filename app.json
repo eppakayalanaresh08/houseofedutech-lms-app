@@ -3,13 +3,16 @@
     "name": "HouseofEdTech",
     "slug": "HouseofEdTech",
     "version": "1.0.0",
-    "orientation": "portrait",
+    "orientation": "default",
     "icon": "./assets/images/icon.png",
     "scheme": "houseofedtech",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSUserNotificationsUsageDescription": "HouseofEdTech uses notifications for bookmark milestones and study reminders."
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -19,7 +22,12 @@
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "softwareKeyboardLayoutMode": "resize",
+      "predictiveBackGestureEnabled": false,
+      "package": "com.sifworld.HouseofEdTech",
+      "permissions": [
+        "POST_NOTIFICATIONS"
+      ]
     },
     "web": {
       "output": "static",
@@ -27,6 +35,8 @@
     },
     "plugins": [
       "expo-router",
+      "expo-secure-store",
+      "expo-notifications",
       [
         "expo-splash-screen",
         {
@@ -43,6 +53,10 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "extra": {
+      "apiBaseUrl": "https://api.freeapi.app",
+      "useMockApi": true
     }
   }
 }
