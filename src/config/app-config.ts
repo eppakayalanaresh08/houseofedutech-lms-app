@@ -9,7 +9,7 @@ const extra = Constants.expoConfig?.extra as
 
 export const appConfig = {
   apiBaseUrl: extra?.apiBaseUrl ?? 'https://api.freeapi.app',
-  useMockApi: extra?.useMockApi ?? true,
+  useMockApi: extra?.useMockApi ?? false,
   requestTimeoutMs: 8000,
   retryCount: 2,
 };

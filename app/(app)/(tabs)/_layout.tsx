@@ -1,5 +1,5 @@
 import { Tabs } from 'expo-router';
-import { Feather } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 
 export default function TabsLayout() {
   return (
@@ -20,21 +20,39 @@ export default function TabsLayout() {
         name="index"
         options={{
           title: 'Catalog',
-          tabBarIcon: ({ color, size }) => <Feather name="book-open" size={size} color={color} />,
+          tabBarIcon: ({ color, size, focused }) => (
+            <Ionicons
+              name={focused ? 'book' : 'book-outline'}
+              size={size}
+              color={color}
+            />
+          ),
         }}
       />
       <Tabs.Screen
         name="bookmarks"
         options={{
           title: 'Saved',
-          tabBarIcon: ({ color, size }) => <Feather name="bookmark" size={size} color={color} />,
+          tabBarIcon: ({ color, size, focused }) => (
+            <Ionicons
+              name={focused ? 'bookmark' : 'bookmark-outline'}
+              size={size}
+              color={color}
+            />
+          ),
         }}
       />
       <Tabs.Screen
         name="profile"
         options={{
           title: 'Profile',
-          tabBarIcon: ({ color, size }) => <Feather name="user" size={size} color={color} />,
+          tabBarIcon: ({ color, size, focused }) => (
+            <Ionicons
+              name={focused ? 'person' : 'person-outline'}
+              size={size}
+              color={color}
+            />
+          ),
         }}
       />
     </Tabs>

@@ -11,6 +11,7 @@ import { useCourseStore } from '@/src/stores/course-store';
 export default function BookmarksScreen() {
   const courses = useCourseStore((state) => state.courses);
   const bookmarks = useCourseStore((state) => state.bookmarks);
+  const bookmarkPendingIds = useCourseStore((state) => state.bookmarkPendingIds);
   const enrolledCourseIds = useCourseStore((state) => state.enrolledCourseIds);
   const toggleBookmark = useCourseStore((state) => state.toggleBookmark);
   const selectCourse = useCourseStore((state) => state.selectCourse);
@@ -41,6 +42,7 @@ export default function BookmarksScreen() {
           <CourseCard
             course={item}
             bookmarked
+            bookmarkPending={bookmarkPendingIds.includes(item.id)}
             enrolled={enrolledCourseIds.includes(item.id)}
             onPress={() => {
               selectCourse(item.id);

@@ -54,7 +54,7 @@ export function buildCourseHtml(course: Course, metadata: Record<string, string>
       <section class="hero">
         <p>Embedded lesson viewer</p>
         <h1>${course.title}</h1>
-        <p>${course.instructor.name} • ${course.level}</p>
+        <p>${course.instructor.name} | ${course.level}</p>
       </section>
       <section class="sheet">
         <h2>Course Summary</h2>

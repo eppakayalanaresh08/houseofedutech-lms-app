@@ -16,6 +16,15 @@ export interface AuthSession {
   expiresAt: number;
 }
 
+export interface RegisteredAccount {
+  id: string;
+  email: string;
+  password: string;
+  username: string;
+  name: string;
+  avatar: string;
+}
+
 export interface Instructor {
   id: string;
   name: string;

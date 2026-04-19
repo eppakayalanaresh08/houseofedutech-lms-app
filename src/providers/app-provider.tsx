@@ -22,10 +22,11 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
 
     async function bootstrapApp() {
       const { hydrate: hydrateCourses, fetchCourses } = useCourseStore.getState();
-      const { hydrate: hydratePreferences, markAppOpened } = usePreferencesStore.getState();
+      const { hydrate: hydratePreferences, initializeNotifications, markAppOpened } = usePreferencesStore.getState();
       const { bootstrap: bootstrapAuth } = useAuthStore.getState();
 
       await Promise.all([hydrateCourses(), hydratePreferences(), bootstrapAuth()]);
+      await initializeNotifications();
       await fetchCourses();
       await markAppOpened();
 

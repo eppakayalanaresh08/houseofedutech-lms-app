@@ -5,8 +5,11 @@ export const storageKeys = {
   authToken: 'houseofedtech.auth.token',
   refreshToken: 'houseofedtech.auth.refresh',
   authUser: 'houseofedtech.auth.user',
+  authSession: 'houseofedtech.auth.session',
+  registeredUsers: 'houseofedtech.auth.registeredUsers',
   bookmarks: 'houseofedtech.course.bookmarks',
   enrollments: 'houseofedtech.course.enrollments',
+  courseProgress: 'houseofedtech.course.progress',
   preferences: 'houseofedtech.preferences',
   lastOpenedAt: 'houseofedtech.app.lastOpenedAt',
 };

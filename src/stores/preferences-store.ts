@@ -12,6 +12,7 @@ const defaultPreferences: AppPreferences = {
 type PreferencesState = {
   preferences: AppPreferences;
   hydrate: () => Promise<void>;
+  initializeNotifications: () => Promise<void>;
   toggleDensity: () => Promise<void>;
   enableNotifications: () => Promise<void>;
   markAppOpened: () => Promise<void>;
@@ -25,6 +26,21 @@ export const usePreferencesStore = create<PreferencesState>((set, get) => ({
     set({ preferences: saved ?? defaultPreferences });
   },
 
+  async initializeNotifications() {
+    const granted = await configureNotifications();
+    const nextPreferences: AppPreferences = {
+      ...get().preferences,
+      notificationsEnabled: granted,
+    };
+
+    await jsonStorage.setItem(storageKeys.preferences, nextPreferences);
+    set({ preferences: nextPreferences });
+
+    if (granted) {
+      await scheduleReturnReminder();
+    }
+  },
+
   async toggleDensity() {
     const nextPreferences: AppPreferences = {
       ...get().preferences,
@@ -35,17 +51,36 @@ export const usePreferencesStore = create<PreferencesState>((set, get) => ({
   },
 
   async enableNotifications() {
-    await configureNotifications();
+    const granted = await configureNotifications();
+
+    if (!granted) {
+      const nextPreferences = { ...get().preferences, notificationsEnabled: false };
+      await jsonStorage.setItem(storageKeys.preferences, nextPreferences);
+      set({ preferences: nextPreferences });
+      return;
+    }
+
     const nextPreferences = { ...get().preferences, notificationsEnabled: true };
     await jsonStorage.setItem(storageKeys.preferences, nextPreferences);
     set({ preferences: nextPreferences });
+    await scheduleReturnReminder();
   },
 
   async markAppOpened() {
-    await jsonStorage.setItem(storageKeys.lastOpenedAt, new Date().toISOString());
+    const openedAt = new Date().toISOString();
+    await jsonStorage.setItem(storageKeys.lastOpenedAt, openedAt);
 
     if (get().preferences.notificationsEnabled) {
-      await scheduleReturnReminder();
+      const scheduled = await scheduleReturnReminder();
+
+      if (scheduled) {
+        const nextPreferences: AppPreferences = {
+          ...get().preferences,
+          reminderScheduledAt: openedAt,
+        };
+        await jsonStorage.setItem(storageKeys.preferences, nextPreferences);
+        set({ preferences: nextPreferences });
+      }
     }
   },
 }));

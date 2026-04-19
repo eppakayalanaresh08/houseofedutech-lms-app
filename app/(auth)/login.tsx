@@ -1,16 +1,16 @@
 import { Link, router } from "expo-router";
 import { useRef, useState } from "react";
 import { ScrollView, Text, View } from "react-native";
+import { Image } from "expo-image";
 
 import { Button } from "@/src/components/ui/button";
 import { Input } from "@/src/components/ui/input";
 import { Screen } from "@/src/components/ui/screen";
-import { SectionHeading } from "@/src/components/ui/section-heading";
 import { useAuthStore } from "@/src/stores/auth-store";
 
 export default function LoginScreen() {
-  const [email, setEmail] = useState("avery@houseofedtech.dev");
-  const [password, setPassword] = useState("Password123");
+  const [identifier, setIdentifier] = useState("");
+  const [password, setPassword] = useState("");
   const scrollRef = useRef<ScrollView>(null);
   const authenticate = useAuthStore((state) => state.authenticate);
   const status = useAuthStore((state) => state.status);
@@ -25,7 +25,12 @@ export default function LoginScreen() {
   }
 
   async function handleLogin() {
-    const success = await authenticate("login", { email, password });
+    const normalized = identifier.trim();
+    const success = await authenticate("login", {
+      email: normalized.includes("@") ? normalized : "",
+      username: normalized.includes("@") ? undefined : normalized,
+      password,
+    });
 
     if (success) {
       router.replace("/(app)/(tabs)");
@@ -34,31 +39,39 @@ export default function LoginScreen() {
 
   return (
     <Screen scroll scrollRef={scrollRef}>
-      <View className="gap-8 py-10">
-        <View className="rounded-[32px] bg-brand px-6 py-8">
-          <Text className="text-xs uppercase tracking-[2px] text-accentSoft">
+      <View className="py-8">
+        <View className="items-center px-4 pb-7 pt-3">
+          <View className="h-[88px] w-[88px] items-center justify-center rounded-[28px] bg-paper shadow-card">
+            <Image
+              source={require("@/assets/images/icon.png")}
+              style={{ height: 60, width: 60, borderRadius: 16 }}
+              contentFit="contain"
+            />
+          </View>
+          <Text className="mt-5 text-[11px] font-semibold uppercase tracking-[3px] text-brand">
             HouseofEdTech
           </Text>
-          <Text className="mt-4 text-3xl font-semibold tracking-tight text-paper">
-            Your learning space
+          <Text className="mt-3 text-center text-[28px] font-semibold tracking-[-0.6px] leading-[32px] text-ink">
+            Welcome Back
           </Text>
-          <Text className="mt-3 text-base leading-7 text-[#E8EDF5]">
-            Access your courses, track progress, and stay connected with the
-            HouseOfEdtech learning experience.
+          <Text className="mt-3 max-w-[290px] text-center text-base leading-7 text-muted">
+            Continue your learning journey.
           </Text>
         </View>
 
-        <View className="gap-5 rounded-[28px] border border-line bg-paper p-5">
-          <SectionHeading
-            eyebrow="Welcome back"
-            title="Sign in to your account"
-            subtitle="Continue your learning journey with a secure and seamless sign-in experience."
-          />
+        <View className="gap-5 rounded-[32px] border border-line bg-paper p-6 shadow-card">
+          <View className="gap-2">
+            <Text className="text-xs font-semibold uppercase tracking-[2px] text-accent">
+              Sign In
+            </Text>
+          </View>
           <Input
-            label="Email"
-            placeholder="Enter email"
-            value={email}
-            onChangeText={setEmail}
+            label="Username or Email"
+            placeholder="Enter username or email"
+            value={identifier}
+            onChangeText={setIdentifier}
+            autoCapitalize="none"
+            autoCorrect={false}
             onFocus={() => scrollFormIntoView(160)}
           />
           <Input
@@ -75,7 +88,7 @@ export default function LoginScreen() {
             onPress={handleLogin}
             disabled={status === "loading"}
           />
-          <Text className="text-center text-sm text-muted">
+          <Text className="pt-1 text-center text-sm text-muted">
             New here?{" "}
             <Link href="/(auth)/register" className="text-brand">
               Create an account

@@ -1,8 +1,8 @@
 import { create } from 'zustand';
 
-import { secureStorage, jsonStorage, storageKeys } from '@/src/lib/storage';
+import { jsonStorage, secureStorage, storageKeys } from '@/src/lib/storage';
 import { authService } from '@/src/services/api/auth-service';
-import type { AuthMode, UserProfile } from '@/src/types/domain';
+import type { AuthMode, AuthSession, RegisteredAccount, UserProfile } from '@/src/types/domain';
 
 type AuthState = {
   status: 'idle' | 'loading' | 'authenticated' | 'anonymous';
@@ -14,6 +14,7 @@ type AuthState = {
   authenticate: (mode: AuthMode, payload: { email: string; password: string; username?: string; name?: string }) => Promise<boolean>;
   logout: () => Promise<void>;
   updateAvatar: (avatar: string) => Promise<void>;
+  updateProfile: (payload: { name: string; email: string; avatar?: string }) => Promise<void>;
 };
 
 export const useAuthStore = create<AuthState>((set, get) => ({
@@ -26,18 +27,30 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   async bootstrap() {
     set({ status: 'loading', error: null });
 
-    const [token, refreshToken, user] = await Promise.all([
+    const [token, refreshToken, user, session] = await Promise.all([
       secureStorage.getToken(storageKeys.authToken),
       secureStorage.getToken(storageKeys.refreshToken),
       jsonStorage.getItem<UserProfile>(storageKeys.authUser),
+      jsonStorage.getItem<AuthSession>(storageKeys.authSession),
     ]);
 
-    if (!token || !user) {
+    if (!token || !user || !session) {
       set({ status: 'anonymous', token: null, refreshToken: null, user: null });
       return;
     }
 
-    const refreshed = await authService.refreshToken(refreshToken);
+    if (session.expiresAt > Date.now() + 60 * 1000) {
+      set({
+        status: 'authenticated',
+        token,
+        refreshToken,
+        user,
+        error: null,
+      });
+      return;
+    }
+
+    const refreshed = await authService.refreshToken(refreshToken ?? session.refreshToken);
 
     if (!refreshed) {
       await get().logout();
@@ -47,6 +60,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     await Promise.all([
       secureStorage.setToken(storageKeys.authToken, refreshed.accessToken),
       secureStorage.setToken(storageKeys.refreshToken, refreshed.refreshToken),
+      jsonStorage.setItem(storageKeys.authSession, refreshed),
     ]);
 
     set({
@@ -81,6 +95,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
         secureStorage.setToken(storageKeys.authToken, result.session.accessToken),
         secureStorage.setToken(storageKeys.refreshToken, result.session.refreshToken),
         jsonStorage.setItem(storageKeys.authUser, result.user),
+        jsonStorage.setItem(storageKeys.authSession, result.session),
       ]);
 
       set({
@@ -109,6 +124,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       secureStorage.deleteToken(storageKeys.authToken),
       secureStorage.deleteToken(storageKeys.refreshToken),
       jsonStorage.removeItem(storageKeys.authUser),
+      jsonStorage.removeItem(storageKeys.authSession),
     ]);
 
     set({
@@ -128,7 +144,57 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     }
 
     const nextUser = { ...currentUser, avatar };
-    await jsonStorage.setItem(storageKeys.authUser, nextUser);
+    const accounts = (await jsonStorage.getItem<RegisteredAccount[]>(storageKeys.registeredUsers)) ?? [];
+    const nextAccounts = accounts.map((account) =>
+      account.id === currentUser.id
+        ? {
+            ...account,
+            email: nextUser.email,
+            name: nextUser.name,
+            avatar,
+          }
+        : account,
+    );
+
+    await Promise.all([
+      jsonStorage.setItem(storageKeys.authUser, nextUser),
+      jsonStorage.setItem(storageKeys.registeredUsers, nextAccounts),
+    ]);
+
+    set({ user: nextUser });
+  },
+
+  async updateProfile(payload) {
+    const currentUser = get().user;
+
+    if (!currentUser) {
+      return;
+    }
+
+    const nextUser = {
+      ...currentUser,
+      name: payload.name.trim(),
+      email: payload.email.trim(),
+      avatar: payload.avatar ?? currentUser.avatar,
+    };
+    const accounts = (await jsonStorage.getItem<RegisteredAccount[]>(storageKeys.registeredUsers)) ?? [];
+    const nextAccounts = accounts.map((account) =>
+      account.id === currentUser.id
+        ? {
+            ...account,
+            email: nextUser.email,
+            name: nextUser.name,
+            avatar: nextUser.avatar,
+            username: nextUser.name.trim().toLowerCase().replace(/[^a-z0-9]+/g, '') || account.username,
+          }
+        : account,
+    );
+
+    await Promise.all([
+      jsonStorage.setItem(storageKeys.authUser, nextUser),
+      jsonStorage.setItem(storageKeys.registeredUsers, nextAccounts),
+    ]);
+
     set({ user: nextUser });
   },
 }));

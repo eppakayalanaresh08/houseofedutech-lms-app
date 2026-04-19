@@ -1,16 +1,17 @@
-import { useMemo } from 'react';
-import { RefreshControl, Text, TextInput, View } from 'react-native';
-import { LegendList } from '@legendapp/list';
-import { router } from 'expo-router';
+import { LegendList } from "@legendapp/list";
+import { router } from "expo-router";
+import { useMemo } from "react";
+import { RefreshControl, Text, TextInput, View } from "react-native";
 
-import { CourseCard } from '@/src/components/course-card';
-import { Screen } from '@/src/components/ui/screen';
-import { SectionHeading } from '@/src/components/ui/section-heading';
-import { useCourseStore } from '@/src/stores/course-store';
+import { CourseCard } from "@/src/components/course-card";
+import { Screen } from "@/src/components/ui/screen";
+import { SectionHeading } from "@/src/components/ui/section-heading";
+import { useCourseStore } from "@/src/stores/course-store";
 
 export default function CatalogScreen() {
   const courses = useCourseStore((state) => state.courses);
   const bookmarks = useCourseStore((state) => state.bookmarks);
+  const bookmarkPendingIds = useCourseStore((state) => state.bookmarkPendingIds);
   const enrolledCourseIds = useCourseStore((state) => state.enrolledCourseIds);
   const search = useCourseStore((state) => state.search);
   const refreshing = useCourseStore((state) => state.refreshing);
@@ -29,18 +30,35 @@ export default function CatalogScreen() {
     }
 
     return courses.filter((course) =>
-      [course.title, course.description, course.instructor.name, course.category].join(' ').toLowerCase().includes(normalized)
+      [
+        course.title,
+        course.description,
+        course.instructor.name,
+        course.category,
+      ]
+        .join(" ")
+        .toLowerCase()
+        .includes(normalized),
     );
   }, [courses, search]);
+  const bookmarkedIds = useMemo(() => new Set(bookmarks.map((entry) => entry.courseId)), [bookmarks]);
+  const pendingBookmarkIds = useMemo(() => new Set(bookmarkPendingIds), [bookmarkPendingIds]);
 
   return (
     <Screen>
       <LegendList
         data={filteredCourses}
         keyExtractor={(item) => item.id}
-        recycleItems
+        extraData={bookmarks}
+        estimatedItemSize={280}
         maintainVisibleContentPosition
-        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => fetchCourses(true)} tintColor="#1E3A5F" />}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={() => fetchCourses(true)}
+            tintColor="#1E3A5F"
+          />
+        }
         ListHeaderComponent={
           <View className="gap-5 pb-5">
             <SectionHeading
@@ -55,18 +73,36 @@ export default function CatalogScreen() {
               placeholderTextColor="#8C8F94"
               className="rounded-2xl border border-line bg-paper px-4 py-4 text-base text-ink"
             />
-            {error ? <Text className="rounded-2xl bg-[#FCE8E8] px-4 py-3 text-sm text-danger">{error}</Text> : null}
-            {loading ? <Text className="text-sm text-muted">Loading course library...</Text> : null}
+            {error ? (
+              <Text className="rounded-2xl bg-[#FCE8E8] px-4 py-3 text-sm text-danger">
+                {error}
+              </Text>
+            ) : null}
+            {loading ? (
+              <Text className="text-sm text-muted">
+                Loading course library...
+              </Text>
+            ) : null}
+            {!loading && filteredCourses.length === 0 ? (
+              <Text className="rounded-2xl border border-dashed border-line bg-paper px-4 py-4 text-sm leading-6 text-muted">
+                No courses matched your search yet. Try a different title,
+                instructor, or category.
+              </Text>
+            ) : null}
           </View>
         }
         renderItem={({ item }) => (
           <CourseCard
             course={item}
-            bookmarked={bookmarks.some((entry) => entry.courseId === item.id)}
+            bookmarked={bookmarkedIds.has(item.id)}
+            bookmarkPending={pendingBookmarkIds.has(item.id)}
             enrolled={enrolledCourseIds.includes(item.id)}
             onPress={() => {
               selectCourse(item.id);
-              router.push({ pathname: '/(app)/course/[id]', params: { id: item.id } });
+              router.push({
+                pathname: "/(app)/course/[id]",
+                params: { id: item.id },
+              });
             }}
             onToggleBookmark={() => toggleBookmark(item.id)}
           />
