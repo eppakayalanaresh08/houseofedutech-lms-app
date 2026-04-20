@@ -15,13 +15,10 @@ export default function LoginScreen() {
   const authenticate = useAuthStore((state) => state.authenticate);
   const status = useAuthStore((state) => state.status);
   const error = useAuthStore((state) => state.error);
-
-  function scrollFormIntoView(offset = 220) {
-    requestAnimationFrame(() => {
-      setTimeout(() => {
-        scrollRef.current?.scrollTo({ y: offset, animated: true });
-      }, 120);
-    });
+  function scrollFormIntoView(offset: number) {
+    setTimeout(() => {
+      scrollRef.current?.scrollTo({ y: offset, animated: true });
+    }, 250);
   }
 
   async function handleLogin() {
@@ -72,7 +69,7 @@ export default function LoginScreen() {
             onChangeText={setIdentifier}
             autoCapitalize="none"
             autoCorrect={false}
-            onFocus={() => scrollFormIntoView(160)}
+            onFocus={() => scrollFormIntoView(180)}
           />
           <Input
             label="Password"
@@ -80,7 +77,7 @@ export default function LoginScreen() {
             value={password}
             onChangeText={setPassword}
             secureTextEntry
-            onFocus={() => scrollFormIntoView(240)}
+            onFocus={() => scrollFormIntoView(260)}
           />
           {error ? <Text className="text-sm text-danger">{error}</Text> : null}
           <Button

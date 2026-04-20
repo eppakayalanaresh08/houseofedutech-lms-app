@@ -17,12 +17,10 @@ export default function RegisterScreen() {
   const status = useAuthStore((state) => state.status);
   const error = useAuthStore((state) => state.error);
 
-  function scrollFormIntoView(offset = 220) {
-    requestAnimationFrame(() => {
-      setTimeout(() => {
-        scrollRef.current?.scrollTo({ y: offset, animated: true });
-      }, 120);
-    });
+  function scrollFormIntoView(offset: number) {
+    setTimeout(() => {
+      scrollRef.current?.scrollTo({ y: offset, animated: true });
+    }, 250);
   }
 
   async function handleRegister() {
@@ -77,7 +75,7 @@ export default function RegisterScreen() {
             onChangeText={setEmail}
             autoCapitalize="none"
             keyboardType="email-address"
-            onFocus={() => scrollFormIntoView(190)}
+            onFocus={() => scrollFormIntoView(200)}
           />
           <Input
             label="Password"
@@ -85,7 +83,7 @@ export default function RegisterScreen() {
             value={password}
             onChangeText={setPassword}
             secureTextEntry
-            onFocus={() => scrollFormIntoView(260)}
+            onFocus={() => scrollFormIntoView(280)}
           />
           {error ? <Text className="text-sm text-danger">{error}</Text> : null}
           <Button

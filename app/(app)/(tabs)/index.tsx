@@ -1,6 +1,6 @@
 import { LegendList } from "@legendapp/list";
 import { router } from "expo-router";
-import { useMemo } from "react";
+import { memo, useCallback, useMemo } from "react";
 import { RefreshControl, Text, TextInput, View } from "react-native";
 
 import { CourseCard } from "@/src/components/course-card";
@@ -8,10 +8,39 @@ import { Screen } from "@/src/components/ui/screen";
 import { SectionHeading } from "@/src/components/ui/section-heading";
 import { useCourseStore } from "@/src/stores/course-store";
 
+const CatalogItem = memo(
+  ({
+    item,
+    isBookmarked,
+    isPending,
+    isEnrolled,
+    onPress,
+    onToggle,
+  }: {
+    item: any;
+    isBookmarked: boolean;
+    isPending: boolean;
+    isEnrolled: boolean;
+    onPress: (id: string) => void;
+    onToggle: (id: string) => void;
+  }) => (
+    <CourseCard
+      course={item}
+      bookmarked={isBookmarked}
+      bookmarkPending={isPending}
+      enrolled={isEnrolled}
+      onPress={() => onPress(item.id)}
+      onToggleBookmark={() => onToggle(item.id)}
+    />
+  ),
+);
+
 export default function CatalogScreen() {
   const courses = useCourseStore((state) => state.courses);
   const bookmarks = useCourseStore((state) => state.bookmarks);
-  const bookmarkPendingIds = useCourseStore((state) => state.bookmarkPendingIds);
+  const bookmarkPendingIds = useCourseStore(
+    (state) => state.bookmarkPendingIds,
+  );
   const enrolledCourseIds = useCourseStore((state) => state.enrolledCourseIds);
   const search = useCourseStore((state) => state.search);
   const refreshing = useCourseStore((state) => state.refreshing);
@@ -41,17 +70,45 @@ export default function CatalogScreen() {
         .includes(normalized),
     );
   }, [courses, search]);
-  const bookmarkedIds = useMemo(() => new Set(bookmarks.map((entry) => entry.courseId)), [bookmarks]);
-  const pendingBookmarkIds = useMemo(() => new Set(bookmarkPendingIds), [bookmarkPendingIds]);
+  const bookmarkedIds = useMemo(
+    () => new Set(bookmarks.map((entry) => entry.courseId)),
+    [bookmarks],
+  );
+  const pendingBookmarkIds = useMemo(
+    () => new Set(bookmarkPendingIds),
+    [bookmarkPendingIds],
+  );
+  const enrolledIds = useMemo(
+    () => new Set(enrolledCourseIds),
+    [enrolledCourseIds],
+  );
+
+  const handlePress = useCallback(
+    (courseId: string) => {
+      selectCourse(courseId);
+      router.push({
+        pathname: "/(app)/course/[id]",
+        params: { id: courseId },
+      });
+    },
+    [selectCourse],
+  );
+
+  const handleToggleBookmark = useCallback(
+    (courseId: string) => {
+      toggleBookmark(courseId);
+    },
+    [toggleBookmark],
+  );
 
   return (
     <Screen>
       <LegendList
         data={filteredCourses}
         keyExtractor={(item) => item.id}
-        extraData={bookmarks}
         estimatedItemSize={280}
-        maintainVisibleContentPosition
+        recycleItems
+        showsVerticalScrollIndicator={false}
         refreshControl={
           <RefreshControl
             refreshing={refreshing}
@@ -64,7 +121,7 @@ export default function CatalogScreen() {
             <SectionHeading
               eyebrow="Course catalog"
               title="Classic learning studio"
-              subtitle="Searchable lessons, bookmark persistence, pull-to-refresh, and production-minded state flows."
+              subtitle="Discover courses, save what matters, and keep your learning moving."
             />
             <TextInput
               value={search}
@@ -92,22 +149,16 @@ export default function CatalogScreen() {
           </View>
         }
         renderItem={({ item }) => (
-          <CourseCard
-            course={item}
-            bookmarked={bookmarkedIds.has(item.id)}
-            bookmarkPending={pendingBookmarkIds.has(item.id)}
-            enrolled={enrolledCourseIds.includes(item.id)}
-            onPress={() => {
-              selectCourse(item.id);
-              router.push({
-                pathname: "/(app)/course/[id]",
-                params: { id: item.id },
-              });
-            }}
-            onToggleBookmark={() => toggleBookmark(item.id)}
+          <CatalogItem
+            item={item}
+            isBookmarked={bookmarkedIds.has(item.id)}
+            isPending={pendingBookmarkIds.has(item.id)}
+            isEnrolled={enrolledIds.has(item.id)}
+            onPress={handlePress}
+            onToggle={handleToggleBookmark}
           />
         )}
-        contentContainerStyle={{ paddingBottom: 140 }}
+        contentContainerStyle={{ paddingBottom: 92 }}
       />
     </Screen>
   );

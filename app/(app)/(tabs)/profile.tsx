@@ -150,7 +150,7 @@ export default function ProfileScreen() {
 
   return (
     <Screen scroll>
-      <View className="pb-12 pt-2">
+      <View className="pb-24 pt-2">
         <View className="items-center">
           <Text className="text-[22px] font-semibold text-ink">Profile</Text>
         </View>
@@ -189,21 +189,27 @@ export default function ProfileScreen() {
           </View>
 
           <View className="mt-8 w-full flex-row items-center justify-between rounded-[28px] bg-paper px-5 py-4">
-            <View className="flex-1 items-center">
+            <Pressable
+              onPress={() => router.push('/(app)/courses/enrolled')}
+              className="flex-1 items-center"
+            >
               <View className="mb-2 h-9 w-9 items-center justify-center rounded-full bg-[#EEF2FF]">
                 <Ionicons name="book-outline" size={18} color="#4F46E5" />
               </View>
               <Text className="text-lg font-semibold text-ink">{enrolledCourseIds.length}</Text>
               <Text className="text-xs text-muted">Enrolled</Text>
-            </View>
+            </Pressable>
             <View className="h-11 w-px bg-line" />
-            <View className="flex-1 items-center">
+            <Pressable
+              onPress={() => router.push('/(app)/(tabs)/bookmarks')}
+              className="flex-1 items-center"
+            >
               <View className="mb-2 h-9 w-9 items-center justify-center rounded-full bg-[#FFF1DB]">
                 <Ionicons name="bookmark-outline" size={18} color="#D97706" />
               </View>
               <Text className="text-lg font-semibold text-ink">{bookmarks.length}</Text>
               <Text className="text-xs text-muted">Saved</Text>
-            </View>
+            </Pressable>
             <View className="h-11 w-px bg-line" />
             <View className="flex-1 items-center">
               <View className="mb-2 h-9 w-9 items-center justify-center rounded-full bg-[#ECFDF3]">
@@ -230,24 +236,17 @@ export default function ProfileScreen() {
           <ProfileRow icon="help-circle-outline" label="Help" onPress={showHelp} />
         </View>
 
-        <View className="mt-5 gap-3">
-          <Button
-            label={isUpdatingPhoto ? 'Opening Photo Options...' : 'Update Photo'}
-            variant="secondary"
-            onPress={openPhotoOptions}
-            disabled={isUpdatingPhoto}
-          />
-        </View>
-
-        <View className="mt-8">
-          <Button
-            label="Log Out"
-            variant="ghost"
+        <View className="mt-5">
+          <Pressable
             onPress={async () => {
               await logout();
               router.replace('/(auth)/login');
             }}
-          />
+            className="flex-row items-center justify-center gap-3 rounded-2xl border border-line bg-paper px-4 py-4"
+          >
+            <Ionicons name="log-out-outline" size={18} color="#1E3A5F" />
+            <Text className="text-base font-semibold text-brand">Log Out</Text>
+          </Pressable>
         </View>
       </View>
 

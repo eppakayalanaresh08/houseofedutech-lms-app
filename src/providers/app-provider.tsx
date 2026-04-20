@@ -3,6 +3,7 @@ import { AppState, type AppStateStatus, View } from 'react-native';
 import NetInfo from '@react-native-community/netinfo';
 
 import { OfflineBanner } from '@/src/components/offline-banner';
+import { LoadingScreen } from '@/src/components/ui/loading-screen';
 import { useAuthStore } from '@/src/stores/auth-store';
 import { useCourseStore } from '@/src/stores/course-store';
 import { usePreferencesStore } from '@/src/stores/preferences-store';
@@ -55,7 +56,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   if (!isReady) {
-    return <View className="flex-1 bg-canvas" />;
+    return <LoadingScreen />;
   }
 
   return (

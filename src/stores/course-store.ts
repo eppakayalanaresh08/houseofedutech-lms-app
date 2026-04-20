@@ -71,33 +71,39 @@ export const useCourseStore = create<CourseState>((set, get) => ({
   },
 
   async toggleBookmark(courseId) {
-    const state = get();
-    if (state.bookmarkPendingIds.includes(courseId)) {
+    if (get().bookmarkPendingIds.includes(courseId)) {
       return;
     }
 
-    const exists = state.bookmarks.some((entry) => entry.courseId === courseId);
-    const bookmarks = exists
-      ? state.bookmarks.filter((entry) => entry.courseId !== courseId)
-      : [{ courseId, savedAt: new Date().toISOString() }, ...state.bookmarks];
+    const currentState = get();
+    const exists = currentState.bookmarks.some((entry) => entry.courseId === courseId);
+    const newBookmarks = exists
+      ? currentState.bookmarks.filter((entry) => entry.courseId !== courseId)
+      : [{ courseId, savedAt: new Date().toISOString() }, ...currentState.bookmarks];
 
-    set({
-      bookmarks,
+    // 1. Optimistic UI update - Immediate
+    set((state) => ({
+      bookmarks: newBookmarks,
       bookmarkPendingIds: [...state.bookmarkPendingIds, courseId],
-    });
+    }));
 
     try {
-      await jsonStorage.setItem(storageKeys.bookmarks, bookmarks);
+      // 2. Persistence - Non-blocking for UI responsiveness
+      await jsonStorage.setItem(storageKeys.bookmarks, newBookmarks);
 
-      if (!exists && bookmarks.length >= 5) {
-        await notifyBookmarkMilestone(bookmarks.length);
+      // 3. Optional side effects
+      if (!exists && newBookmarks.length >= 5) {
+        // Don't await this if it blocks UI
+        void notifyBookmarkMilestone(newBookmarks.length);
       }
     } catch (error) {
-      set({ bookmarks: state.bookmarks });
-      throw error;
+      // Revert on failure
+      set({ bookmarks: currentState.bookmarks });
+      console.error('Failed to sync bookmark:', error);
     } finally {
-      set((currentState) => ({
-        bookmarkPendingIds: currentState.bookmarkPendingIds.filter((id) => id !== courseId),
+      // 4. Cleanup pending state - Always run
+      set((state) => ({
+        bookmarkPendingIds: state.bookmarkPendingIds.filter((id) => id !== courseId),
       }));
     }
   },
