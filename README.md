@@ -6,79 +6,70 @@ Repository: `Add your GitHub repository URL here`
 
 ## Screenshots
 
-### SplashScreen
+<table>
+  <tr>
+    <td align="center"><b>Splash Screen</b></td>
+    <td align="center"><b>Login</b></td>
+    <td align="center"><b>Register</b></td>
+  </tr>
+  <tr>
+    <td><img src="./assets/images/SplashScreen.jpeg" width="180"/></td>
+    <td><img src="./assets/images/Login.jpeg" width="180"/></td>
+    <td><img src="./assets/images/Register.jpeg" width="180"/></td>
+  </tr>
+  <tr>
+    <td align="center"><b>Catalog</b></td>
+    <td align="center"><b>Search In Catalog</b></td>
+    <td align="center"><b>Course Details</b></td>
+  </tr>
+  <tr>
+    <td><img src="./assets/images/Catalog.jpeg" width="180"/></td>
+    <td><img src="./assets/images/CatalogSearch.jpeg" width="180"/></td>
+    <td><img src="./assets/images/CourseDetails.jpeg" width="180"/></td>
+  </tr>
+  <tr>
+    <td align="center"><b>Enrollment Success</b></td>
+    <td align="center"><b>Embedded Viewer</b></td>
+    <td align="center"><b>Bookmarks</b></td>
+  </tr>
+  <tr>
+    <td><img src="./assets/images/EnrollmentSuccess.jpeg" width="180"/></td>
+    <td><img src="./assets/images/EmbeddedViewer.jpeg" width="180"/></td>
+    <td><img src="./assets/images/Bookmarks.jpeg" width="180"/></td>
+  </tr>
+  <tr>
+    <td align="center"><b>Enrolled Courses</b></td>
+    <td align="center"><b>Profile</b></td>
+    <td align="center"><b>Edit Profile</b></td>
+  </tr>
+  <tr>
+    <td><img src="./assets/images/EnrolledCourses.jpeg" width="180"/></td>
+    <td><img src="./assets/images/Profile.jpeg" width="180"/></td>
+    <td><img src="./assets/images/EditProfile.jpeg" width="180"/></td>
+  </tr>
+  <tr>
+    <td align="center"><b>Profile Photo Sheet</b></td>
+    <td align="center"><b>Edit Photo Sheet</b></td>
+    <td align="center"><b>Loading Screen</b></td>
+  </tr>
+  <tr>
+    <td><img src="./assets/images/ProfilePhotoSheet.jpeg" width="180"/></td>
+    <td><img src="./assets/images/EditProfilePhotoSheet.jpeg" width="180"/></td>
+    <td><img src="./assets/images/LoadingScreen.jpeg" width="180"/></td>
+  </tr>
+  <tr>
+    <td align="center"><b>Offline Banner</b></td>
+    <td align="center"><b>Bookmark Notification</b></td>
+    <td align="center"><b>Not Found</b></td>
+  </tr>
+  <tr>
+    <td><img src="./assets/images/OfflineBanner.jpeg" width="180"/></td>
+    <td><img src="./assets/images/BookmarkNotification.jpeg" width="180"/></td>
+    <td><img src="./assets/images/NotFound.jpeg" width="180"/></td>
+  </tr>
+</table>
 
-![SplashScreen](./assets/images/SplashScreen.jpeg)
-
-### Login
-
-![Login](./assets/images/Login.jpeg)
-
-### Register
-
-![Register](./assets/images/Register.jpeg)
-
-### Catalog
-
-![Catalog](assets/screenshots/catalog.png)
-
-### Search In Catalog
-
-![Search In Catalog](assets/screenshots/catalog-search.png)
-
-### Course Details
-
-![Course Details](assets/screenshots/course-details.png)
-
-### Enrollment Success Modal
-
-![Enrollment Success Modal](assets/screenshots/enrollment-success-modal.png)
-
-### Embedded Viewer
-
-![Embedded Viewer](assets/screenshots/embedded-viewer.png)
-
-### Bookmarks
-
-![Bookmarks](assets/screenshots/bookmarks.png)
-
-### Enrolled Courses
-
-![Enrolled Courses](assets/screenshots/enrolled-courses.png)
-
-### Profile
-
-![Profile](assets/screenshots/profile.png)
-
-### Edit Profile
-
-![Edit Profile](assets/screenshots/edit-profile.png)
-
-### Profile Photo Action Sheet
-
-![Profile Photo Action Sheet](assets/screenshots/profile-photo-sheet.png)
-
-### Edit Profile Photo Action Sheet
-
-![Edit Profile Photo Action Sheet](assets/screenshots/edit-profile-photo-sheet.png)
-
-### Loading Screen
-
-![Loading Screen](assets/screenshots/loading-screen.png)
-
-### Offline Banner
-
-![Offline Banner](assets/screenshots/offline-banner.png)
-
-### Bookmark Milestone Notification
-
-![Bookmark Milestone Notification](assets/screenshots/bookmark-notification.png)
-
-### Not Found Screen
-
-![Not Found Screen](assets/screenshots/not-found.png)
-
-Place all screenshots inside: `assets/screenshots/`
+Place all screenshots inside: `assets/images/`
 
 HouseofEdTech is a React Native Expo assignment project built as a mini learning management system (LMS).  
 The app focuses on a calm, classic course-browsing experience instead of a generic template UI, while still keeping the codebase structured like a production-ready mobile app.
