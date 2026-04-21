@@ -11,11 +11,15 @@ Repository: `Add your GitHub repository URL here`
     <td align="center"><b>Splash Screen</b></td>
     <td align="center"><b>Login</b></td>
     <td align="center"><b>Register</b></td>
+    <td align="center"><b>Home</b></td>
+
   </tr>
   <tr>
     <td><img src="./assets/images/SplashScreen.jpeg" width="180"/></td>
     <td><img src="./assets/images/Login.jpeg" width="180"/></td>
     <td><img src="./assets/images/Register.jpeg" width="180"/></td>
+     <td><img src="./assets/images/Home.jpeg" width="180"/></td>
+
   </tr>
   <tr>
     <td align="center"><b>Catalog</b></td>

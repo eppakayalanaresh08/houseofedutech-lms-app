@@ -1,7 +1,10 @@
-import type { Course } from '@/src/types/domain';
+import type { Course } from "@/src/types/domain";
 
 export function buildCourseHtml(course: Course) {
-  const chapterLength = Math.max(8, Math.round(course.durationMinutes / Math.max(course.lessons, 1)));
+  const chapterLength = Math.max(
+    8,
+    Math.round(course.durationMinutes / Math.max(course.lessons, 1)),
+  );
   const lessonModules = [
     {
       title: `Lesson 1: Foundations of ${course.category}`,
@@ -223,7 +226,7 @@ export function buildCourseHtml(course: Course) {
                     <div class="lesson-meta">Module ${index + 1} • ${module.minutes} min focus block</div>
                   </article>`,
               )
-              .join('')}
+              .join("")}
           </div>
         </div>
 
@@ -243,9 +246,7 @@ export function buildCourseHtml(course: Course) {
         </div>
 
         <button id="complete">Mark This Lesson Complete</button>
-        <div class="footer">
-          Completion is sent back to the native app through the WebView bridge so course progress can be updated immediately.
-        </div>
+       
       </section>
       <script>
         var nativeHeaders = window.__NATIVE_HEADER_BRIDGE__ || {};

@@ -55,7 +55,11 @@
     },
     "extra": {
       "apiBaseUrl": "https://api.freeapi.app",
-      "useMockApi": false
+      "useMockApi": false,
+      "router": {},
+      "eas": {
+        "projectId": "e61b88f6-e7fc-4267-8281-c2f679f3b998"
+      }
     }
   }
 }

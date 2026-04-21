@@ -37,14 +37,14 @@ export default function ViewerScreen() {
 
   return (
     <Screen>
-      <View className="mb-3 rounded-2xl border border-line bg-paper px-4 py-3">
+      {/* <View className="mb-3 rounded-2xl border border-line bg-paper px-4 py-3">
         <Text className="text-sm text-muted">{message}</Text>
-      </View>
+      </View> */}
       {hasError ? (
         <View className="gap-3 rounded-2xl bg-[#FCE8E8] px-4 py-4">
-          <Text className="text-sm text-danger">
+          {/* <Text className="text-sm text-danger">
             The embedded lesson failed to load. Try re-opening the viewer.
-          </Text>
+          </Text> */}
           <Button
             label="Mark Intro Complete Anyway"
             variant="secondary"
