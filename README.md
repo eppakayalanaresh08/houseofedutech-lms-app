@@ -2,7 +2,7 @@
 
 ## Project URL
 
-Repository: `Add your GitHub repository URL here`
+Repository: `https://github.com/eppakayalanaresh08/houseofedutech-lms-app.git`
 
 ## Screenshots
 
@@ -181,7 +181,7 @@ For assignment review, this project contains 15+ user-facing screens/views inclu
 ### 1. Clone the project
 
 ```bash
-git clone <your-repository-url>
+git clone https://github.com/eppakayalanaresh08/houseofedutech-lms-app.git
 cd HouseofEdTech
 ```
 
