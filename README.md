@@ -22,55 +22,43 @@ Repository: `Add your GitHub repository URL here`
 
   </tr>
   <tr>
-    <td align="center"><b>Catalog</b></td>
-    <td align="center"><b>Search In Catalog</b></td>
     <td align="center"><b>Course Details</b></td>
-  </tr>
-  <tr>
-    <td><img src="./assets/images/Catalog.jpeg" width="180"/></td>
-    <td><img src="./assets/images/CatalogSearch.jpeg" width="180"/></td>
-    <td><img src="./assets/images/CourseDetails.jpeg" width="180"/></td>
-  </tr>
-  <tr>
+    <td align="center"><b>Course Details-Enrollment</b></td>
     <td align="center"><b>Enrollment Success</b></td>
-    <td align="center"><b>Embedded Viewer</b></td>
+    <td align="center"><b>Embedded Viewer WebView</b></td>
+
+  </tr>
+  <tr>
+    <td><img src="./assets/images/CourseDetails.jpeg" width="180"/></td>
+    <td><img src="./assets/images/CourseDetails2.jpeg" width="180"/></td>
+    <td><img src="./assets/images/CourseEnrolle.jpeg" width="180"/></td>
+    <td><img src="./assets/images/WebView.jpeg" width="180"/></td>
+
+  </tr>
+  <tr>
     <td align="center"><b>Bookmarks</b></td>
-  </tr>
-  <tr>
-    <td><img src="./assets/images/EnrollmentSuccess.jpeg" width="180"/></td>
-    <td><img src="./assets/images/EmbeddedViewer.jpeg" width="180"/></td>
-    <td><img src="./assets/images/Bookmarks.jpeg" width="180"/></td>
-  </tr>
-  <tr>
-    <td align="center"><b>Enrolled Courses</b></td>
     <td align="center"><b>Profile</b></td>
+    <td align="center"><b>Profile Image upload</b></td>
     <td align="center"><b>Edit Profile</b></td>
   </tr>
   <tr>
-    <td><img src="./assets/images/EnrolledCourses.jpeg" width="180"/></td>
-    <td><img src="./assets/images/Profile.jpeg" width="180"/></td>
-    <td><img src="./assets/images/EditProfile.jpeg" width="180"/></td>
+    <td><img src="./assets/images/Bookmark.jpeg" width="180"/></td>
+    <td><img src="./assets/images/profile.jpeg" width="180"/></td>
+    <td><img src="./assets/images/profileupload.jpeg" width="180"/></td>
+    <td><img src="./assets/images/editProfile.jpeg" width="180"/></td>
+
   </tr>
   <tr>
-    <td align="center"><b>Profile Photo Sheet</b></td>
-    <td align="center"><b>Edit Photo Sheet</b></td>
-    <td align="center"><b>Loading Screen</b></td>
-  </tr>
-  <tr>
-    <td><img src="./assets/images/ProfilePhotoSheet.jpeg" width="180"/></td>
-    <td><img src="./assets/images/EditProfilePhotoSheet.jpeg" width="180"/></td>
-    <td><img src="./assets/images/LoadingScreen.jpeg" width="180"/></td>
-  </tr>
-  <tr>
-    <td align="center"><b>Offline Banner</b></td>
+    <td align="center"><b>Enrolled Courses</b></td>
     <td align="center"><b>Bookmark Notification</b></td>
-    <td align="center"><b>Not Found</b></td>
+    <td align="center"><b>Notification 24 hours Remainder</b></td>
   </tr>
   <tr>
-    <td><img src="./assets/images/OfflineBanner.jpeg" width="180"/></td>
-    <td><img src="./assets/images/BookmarkNotification.jpeg" width="180"/></td>
-    <td><img src="./assets/images/NotFound.jpeg" width="180"/></td>
+    <td><img src="./assets/images/enroll.jpeg" width="180"/></td>
+    <td><img src="./assets/images/Course-Saved-Notification.jpeg" width="180"/></td>
+    <td><img src="./assets/images/remainder-24hourse.jpeg" width="180"/></td>
   </tr>
+  
 </table>
 
 Place all screenshots inside: `assets/images/`
